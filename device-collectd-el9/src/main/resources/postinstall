@@ -1,0 +1,15 @@
+if [ $1 = 1 ]; then
+
+  # Register the service
+  /usr/bin/systemctl enable rrdcached.socket
+  /usr/bin/systemctl enable collectd.service
+  /usr/bin/systemctl enable collectd-autodiscovery.service
+  /usr/bin/systemctl enable collectd-postdiscovery.service
+
+  # Allow rrdcached to mmap
+  /usr/sbin/setsebool -P domain_can_mmap_files 1
+  /usr/sbin/semanage fcontext -a -t cluster_var_lib_t '/var/lib/device/rrd(/.*)?'
+  /usr/sbin/restorecon -R -v /var/lib/device/rrd
+
+fi
+

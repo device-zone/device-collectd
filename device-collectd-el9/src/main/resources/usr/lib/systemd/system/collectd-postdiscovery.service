@@ -1,0 +1,17 @@
+# systemd service for managing all collectd postconfiguration.
+
+[Unit]
+Description=Collectd Configuration Postdiscovery
+After=collectd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sequence /usr/libexec/device-postdiscovery/collectd.d start
+ExecReload=/usr/bin/sequence /usr/libexec/device-postdiscovery/collectd.d reload
+RemainAfterExit=on
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
+

@@ -1,0 +1,19 @@
+# systemd service for managing all collectd autoconfiguration.
+
+[Unit]
+Description=Collectd Server Configuration Autodiscovery
+Before=collectd.service
+After=firewalld.service
+Requires=rrdcached.socket
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sequence /usr/libexec/device-autodiscovery/collectd.d start
+ExecReload=/usr/bin/sequence /usr/libexec/device-autodiscovery/collectd.d reload
+ExecStop=/usr/bin/sequence /usr/libexec/device-autodiscovery/collectd.d stop
+RemainAfterExit=on
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
